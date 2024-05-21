@@ -8,7 +8,6 @@ mongoose.connect('mongodb://localhost:27017/petslist', {
   useUnifiedTopology: true,
 })
 
-
 mongoose.connect('mongodb://localhost:27017/petslist');
 main().catch(err => console.log(err));
 
