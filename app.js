@@ -3,10 +3,10 @@ const path = require('path');
 const mongoose = require('mongoose');
 const Pets = require('./models/pets');
 
-mongoose.connect('mongodb://localhost:27017/petslist', {
+/* mongoose.connect('mongodb://localhost:27017/petslist', {
   useNewUrlParser: true, 
   useUnifiedTopology: true,
-})
+}) */
 
 mongoose.connect('mongodb://localhost:27017/petslist');
 main().catch(err => console.log(err));
@@ -25,21 +25,16 @@ app.get('/', (req, res) => {
     res.render('home');
 })
 
-app.get('/addpet', async(req, res) => {
-    const pet = new Pets({
-      name: 'Fluffy',
-      petType: 'Cat',
-      breed: 'Siamese',
-      age: 3,
-      gender: 'Female',
-      isSpayedOrNeutered: true,
-      location: 'San Francisco',
-      description: 'Fluffy is a very friendly cat who loves to play with toys and cuddle with her human.',
-    })
+app.get('/pets', async (req, res) => {
+  //get all pets from db
+  const pets = await Pets.find({});
+  res.render('pets/index', { pets });
+})
 
-    await pet.save();
-    res.send(pet);
-
+app.get('/pets/:id', async (req, res) => {
+  //find pet by id
+  const pet = await Pets.findById(req.params.id);
+  res.render('pets/show', {pet});
 })
 
 app.listen(3000, () => {
