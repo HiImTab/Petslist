@@ -7,6 +7,7 @@
     </head>
     <body>
         <h1>All Pets</h1>
+        <a href="/pets/new">Add Pet</a>
         <ul>
             <% for (let pet of pets) { %>
                 <li><a href="/pets/<%=pet._id%>"><%= pet.name %></a></li>

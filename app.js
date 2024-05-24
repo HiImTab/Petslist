@@ -20,6 +20,8 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+//allowing express to parse form data
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
     res.render('home');
@@ -29,6 +31,16 @@ app.get('/pets', async (req, res) => {
   //get all pets from db
   const pets = await Pets.find({});
   res.render('pets/index', { pets });
+})
+
+app.get('/pets/new', (req, res) => {
+  res.render('pets/new');
+})
+
+app.post('/pets', async (req, res) => {
+  const pet = new Pets(req.body.pet);
+  await pet.save();
+  res.redirect(`/pets/${pet._id}`);
 })
 
 app.get('/pets/:id', async (req, res) => {
